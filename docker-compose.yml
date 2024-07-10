@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./online-booking-system
+      dockerfile: DockerFile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./cars_booking
+      dockerfile: DockerFile
+    volumes:
+      - ./cars_booking:/app
+    ports:
+      - "8000:8000"
+
+  db:
+    image: alpine:latest
+    command: sh -c "apk add --no-cache sqlite && tail -f /dev/null"
+    volumes:
+      - ./data:/var/lib/sqlite
